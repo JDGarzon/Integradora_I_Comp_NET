@@ -1,5 +1,6 @@
 package application;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
@@ -10,6 +11,7 @@ import javafx.scene.control.TextField;
 public class ChatController {
 	
 	Main main;
+	
 	Client client;
 
 	@FXML
@@ -25,11 +27,14 @@ public class ChatController {
 	TextArea chat;
 	
 	@FXML
+	TextField ipSelector;
+	/**
+	@FXML
 	MenuButton serverSelectionMenu;
 	
 	@FXML
 	MenuItem myApartment;
-	
+	*/
 	@FXML
 	public void back() {
 		client.showHome();
@@ -40,9 +45,9 @@ public class ChatController {
 		String messageToSend = message.getText();
 		if (messageToSend.length() != 0) {
 			chat.appendText("\n" + "Me: "+messageToSend);
-			String ip = "192.168.10.11";
-			String apartment = myApartment.getText();
-			client.sendMessage(new ChatMessage(ip,apartment,messageToSend));
+			String ip = ipSelector.getText();
+			//String apartment = myApartment.getText();
+			client.sendMessage(new ChatMessage(ip,messageToSend));
 			
 		}
 	}
@@ -53,5 +58,18 @@ public class ChatController {
 	
 	public void setClient(Client client) {
 		this.client = client;
+	}
+	
+	public void actualize() {
+		Platform.runLater(() -> {
+			while (true) {
+				try {
+					Thread.sleep(1000/20);
+					client.actualize();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 }

@@ -15,28 +15,31 @@ import javafx.stage.Stage;
 public class Client extends Application {
 	
 		private final static int PORT = 9090;
+		String serverIp = "192.168.10.11";
 		
 		private Stage currentStage;
+		private ChatController actualChatController;
 		
 		public static void main(String[] args) {
 			launch(args);
 		}
 		
-		@SuppressWarnings("resource")
-		@Override
-		public void start(Stage primaryStage) {
+		public void actualize() {
 			try {
-				showHome();
 				ServerSocket serverSocket = new ServerSocket(PORT);
-				while(true) {
-					Socket socket = serverSocket.accept();
-					ObjectInputStream inStream = new ObjectInputStream(socket.getInputStream());
-					ChatMessage message = (ChatMessage) inStream.readObject();
-					System.out.println(message.getMessage());
-				}
+				Socket socket = serverSocket.accept();
+				ObjectInputStream inStream = new ObjectInputStream(socket.getInputStream());
+				ChatMessage message = (ChatMessage) inStream.readObject();
+				actualChatController.chat.appendText("\n"+message.getMessage());
+				//System.out.println(message.getMessage());
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
+		}
+		
+		@Override
+		public void start(Stage primaryStage) {
+			showHome();
 		}
 		
 		public void showHome() {
@@ -68,6 +71,7 @@ public class Client extends Application {
 				chat = loader.load();
 				ChatController chatController = loader.getController();
 				chatController.setClient(this);
+				actualChatController = chatController;
 				Stage stage = currentStage;
 				root = (BorderPane) stage.getScene().getRoot();
 				root.setCenter(chat);
@@ -80,9 +84,11 @@ public class Client extends Application {
 		
 		public void sendMessage(ChatMessage message) {
 			try {
-				Socket socket = new Socket(message.getIp(),9090);
+				Socket socket = new Socket(serverIp,9090);
 				ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream());
 				outStream.writeObject(message);
+				
+				socket.close();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
