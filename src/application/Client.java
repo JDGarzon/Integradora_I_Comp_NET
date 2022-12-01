@@ -1,6 +1,7 @@
 package application;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.*;
 
@@ -12,6 +13,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 public class Client extends Application {
+	
+		private final static int PORT = 9090;
 		
 		private Stage currentStage;
 		
@@ -23,6 +26,13 @@ public class Client extends Application {
 		public void start(Stage primaryStage) {
 			try {
 				showHome();
+				ServerSocket serverSocket = new ServerSocket(PORT);
+				while(true) {
+					Socket socket = serverSocket.accept();
+					ObjectInputStream inStream = new ObjectInputStream(socket.getInputStream());
+					ChatMessage message = (ChatMessage) inStream.readObject();
+					System.out.println(message.getMessage());
+				}
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
