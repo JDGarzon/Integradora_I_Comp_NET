@@ -11,8 +11,7 @@ public class ChatMessage implements Serializable{
 	private String apartment;
 	private String message;
 	
-	public ChatMessage(String ip, String apartment, String message) {
-		this.ip = ip;
+	public ChatMessage(String apartment, String message) {
 		this.apartment = apartment;
 		this.message = message;
 	}

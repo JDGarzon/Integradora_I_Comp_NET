@@ -25,11 +25,14 @@ public class ChatController {
 	TextArea chat;
 	
 	@FXML
+	TextField ipSelector;
+	/**
+	@FXML
 	MenuButton serverSelectionMenu;
 	
 	@FXML
 	MenuItem myApartment;
-	
+	*/
 	@FXML
 	public void back() {
 		client.showHome();
@@ -40,9 +43,9 @@ public class ChatController {
 		String messageToSend = message.getText();
 		if (messageToSend.length() != 0) {
 			chat.appendText("\n" + "Me: "+messageToSend);
-			String ip = "192.168.10.11";
-			String apartment = myApartment.getText();
-			client.sendMessage(new ChatMessage(ip,apartment,messageToSend));
+			String ip = ipSelector.getText();
+			//String apartment = myApartment.getText();
+			client.sendMessage(new ChatMessage(ip,messageToSend));
 			
 		}
 	}
