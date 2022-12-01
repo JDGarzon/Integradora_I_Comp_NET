@@ -24,21 +24,22 @@ public class Client extends Application {
 			launch(args);
 		}
 		
-		@Override
-		public void start(Stage primaryStage) {
+		public void actualize() {
 			try {
-				showHome();
 				ServerSocket serverSocket = new ServerSocket(PORT);
-				while(true) {
-					Socket socket = serverSocket.accept();
-					ObjectInputStream inStream = new ObjectInputStream(socket.getInputStream());
-					ChatMessage message = (ChatMessage) inStream.readObject();
-					actualChatController.chat.appendText("\n"+message.getMessage());
-					//System.out.println(message.getMessage());
-				}
+				Socket socket = serverSocket.accept();
+				ObjectInputStream inStream = new ObjectInputStream(socket.getInputStream());
+				ChatMessage message = (ChatMessage) inStream.readObject();
+				actualChatController.chat.appendText("\n"+message.getMessage());
+				//System.out.println(message.getMessage());
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
+		}
+		
+		@Override
+		public void start(Stage primaryStage) {
+			showHome();
 		}
 		
 		public void showHome() {

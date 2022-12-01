@@ -1,5 +1,6 @@
 package application;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
@@ -10,6 +11,7 @@ import javafx.scene.control.TextField;
 public class ChatController {
 	
 	Main main;
+	
 	Client client;
 
 	@FXML
@@ -56,5 +58,18 @@ public class ChatController {
 	
 	public void setClient(Client client) {
 		this.client = client;
+	}
+	
+	public void actualize() {
+		Platform.runLater(() -> {
+			while (true) {
+				try {
+					Thread.sleep(1000/20);
+					client.actualize();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 }
