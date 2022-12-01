@@ -16,11 +16,6 @@
             <Font name="System Bold" size="24.0" />
          </font>
       </Label>
-      <MenuButton fx:id="serverSelectionMenu" layoutX="250.0" layoutY="27.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="276.0" text="MenuButton">
-        <items>
-          <MenuItem fx:id="myApartment" mnemonicParsing="false" text="myApartment" />
-        </items>
-      </MenuButton>
       <Button fx:id="backButton" layoutX="27.0" layoutY="23.0" mnemonicParsing="false" onAction="#back" prefHeight="42.0" prefWidth="46.0" text="&lt;-" />
       <TextArea fx:id="chat" layoutX="27.0" layoutY="84.0" prefHeight="245.0" prefWidth="545.0" />
       <TextField fx:id="message" layoutX="27.0" layoutY="345.0" prefHeight="35.0" prefWidth="478.0" />

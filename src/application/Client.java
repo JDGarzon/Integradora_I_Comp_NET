@@ -22,6 +22,7 @@ public class Client extends Application {
 			launch(args);
 		}
 		
+		@SuppressWarnings("resource")
 		@Override
 		public void start(Stage primaryStage) {
 			try {
