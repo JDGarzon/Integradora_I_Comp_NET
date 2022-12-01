@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 public class Client extends Application {
 	
 		private final static int PORT = 9090;
-		String serverIp = "192.168.10.11";
+		String serverIp = "192.168.100.19";
 		
 		private Stage currentStage;
 		private ChatController actualChatController;
