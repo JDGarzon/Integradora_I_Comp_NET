@@ -64,7 +64,9 @@ public class Client extends Application implements Runnable {
 			e.printStackTrace();
 		}
 	}
-	
+	/**
+	 * Es el metodo encargado de mostrar el chat
+	 */
 	public void showChat() {
 		try{
 			BorderPane root;
@@ -83,7 +85,10 @@ public class Client extends Application implements Runnable {
 			e.printStackTrace();
 		}
 	}
-	
+	/**
+	 * Es el metodo encargado de mostrar las opciones de si permitir ingresar a alguien o no
+	 * @param name El parametro name es el nombre de la persona que quiere ingresar
+	 */
 	public void showAllow(String name) {
 		try{
 			BorderPane root;
@@ -104,15 +109,14 @@ public class Client extends Application implements Runnable {
 		}
 	}
 	
-	public void showVisitAdvice(){
-		
-	}
 	
 	public static void main(String[] args) {
 		launch(args);
 	}
 
-
+	/**
+	 * Metodo encargado de mantener el cliente escuchando por posibles respuestas
+	 */
 	@Override
 	public void run() {
 		
@@ -157,23 +161,17 @@ public class Client extends Application implements Runnable {
 		
 		
 	}
-	
+	/**
+	 * Niega el acceso de una persona
+	 */
 	public void deny() {
 		controller.deny();
 	}
-	
+	/**
+	 * Permite el acceso de una persona
+	 */
 	public void allow() {
 		controller.allow();
-	}
-
-	public void actualize() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void sendMessage(ChatMessage chatMessage) {
-		// TODO Auto-generated method stub
-		
 	}
 	
 	

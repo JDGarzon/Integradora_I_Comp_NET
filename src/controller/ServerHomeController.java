@@ -6,7 +6,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-
+/**
+ * Es la clase encargada de controlar la interfaz ServerHome
+ */
 public class ServerHomeController {
 	
 	Server server;
@@ -25,7 +27,9 @@ public class ServerHomeController {
 	
 	@FXML
 	Label answer;
-	
+	/**
+	 * Es la clase encargada de cambiar a la visra de AddApartmentView
+	 */
 	@FXML
 	public void add() {
 		Platform.runLater(()->{
@@ -33,7 +37,9 @@ public class ServerHomeController {
 		});
 		
 	}
-	
+	/**
+	 * Es el metodo encargado notificar sobre un visitante a un apartamento
+	 */
 	@FXML
 	public void adviceVisit() {
 		server.notifyVisit(visitantName.getText(),apartment.getText());
