@@ -2,7 +2,6 @@ package application;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -12,8 +11,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import controller.ClienController;
-import controller.PanicViewController;
-import controller.ServerHomeController;
+import controller.SingInController;
 import javafx.application.Application;
 
 
@@ -23,18 +21,30 @@ public class Client extends Application implements Runnable {
 	
 	Stage currentStage;
 	
+	String gmail;
+	String contact;
+	String password;
+	String num;
+	public void complete(String gmail,String contact,String password,String num) {
+		this.gmail=gmail;
+		this.contact=contact;
+		this.password=password;
+		this.num=num;
+	}
+	
 	@Override
 	public void start(Stage primaryStage) {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("../ui/EnterSingIn.fxml"));
 			BorderPane root = (BorderPane)loader.load();
-			controller = loader.getController();
-			Scene scene = new Scene(root,300,300);
+			SingInController controller = loader.getController();
+			Scene scene = new Scene(root,600,400);
 			scene.getStylesheets().add(getClass().getResource("../ui/application.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.show();
 			currentStage = primaryStage;
 			controller.setClient(this);
+			
 			Thread thread=new Thread(this);
 			thread.start();;
 			
@@ -49,8 +59,9 @@ public class Client extends Application implements Runnable {
 			BorderPane chatView;
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("../ui/Client.fxml"));
 			chatView = loader.load();
-			ClienController clientController = loader.getController();
-			clientController.setClient(this);
+			controller = loader.getController();
+			controller.setClient(this);
+			controller.complete(gmail, contact, password,num);
 			Stage stage = currentStage;
 			root = (BorderPane) stage.getScene().getRoot();
 			root.setCenter(chatView);

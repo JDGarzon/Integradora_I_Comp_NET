@@ -10,11 +10,13 @@ public class ChatMessage implements Serializable{
 	private String ip;
 	private String apartment;
 	private String message;
+	private Type type;
 	
-	public ChatMessage(String apartment, String message,String ip) {
+	public ChatMessage(String apartment, String message,String ip,Type type) {
 		this.apartment = apartment;
 		this.message = message;
 		this.ip=ip;
+		this.type=type;
 	}
 
 	public String getMessage() {
@@ -27,6 +29,10 @@ public class ChatMessage implements Serializable{
 
 	public String getIp() {
 		return ip;
+	}
+
+	public Type getType() {
+		return type;
 	}
 	
 	

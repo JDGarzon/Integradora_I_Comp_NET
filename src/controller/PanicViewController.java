@@ -23,4 +23,8 @@ public class PanicViewController {
 		this.server = server;
 	}
 	
+	public void setApp(String app) {
+		apartment.setText("Appartment:"+app);
+	}
+	
 }

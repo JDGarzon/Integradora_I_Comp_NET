@@ -9,7 +9,7 @@ import java.net.Socket;
 import java.util.Hashtable;
 
 import javafx.application.Application;
-
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
@@ -26,7 +26,7 @@ public class Server extends Application implements Runnable{
 	AddApartmentController conntrollApart;
 	Hashtable<Integer,Appartment> apartments;
 	Stage currentStage;
-	
+	/*
 	@Override
 	public void start(Stage primaryStage) {
 		try {
@@ -42,7 +42,7 @@ public class Server extends Application implements Runnable{
 			primaryStage.setScene(scene);
 			primaryStage.show();
 			currentStage = primaryStage;
-			showAddView();
+			
 			Thread thread=new Thread(this);
 			thread.start();
 			
@@ -51,8 +51,8 @@ public class Server extends Application implements Runnable{
 			e.printStackTrace();
 		}
 	}
+	*/
 	
-	/**
 	  public void start(Stage primaryStage) {
 		try {
 			BorderPane root;
@@ -70,8 +70,6 @@ public class Server extends Application implements Runnable{
 			stage.setScene(scene);
 			stage.show();
 			currentStage = stage;
-			
-			showAddView();
 			Thread thread=new Thread(this);
 			thread.start();
 			
@@ -80,7 +78,6 @@ public class Server extends Application implements Runnable{
 			e.printStackTrace();
 		}
 	}
-	 */
 	
 	public void showHome() {
 		try{
@@ -101,18 +98,22 @@ public class Server extends Application implements Runnable{
 		
 	}
 	
-	public void showPanicScreen(){
+	public void showPanicScreen(String num){
 		try{
 			BorderPane root;
 			AnchorPane panicView;
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("../ui/PanicView.fxml"));
 			panicView = loader.load();
+			
 			PanicViewController panicController = loader.getController();
 			panicController.setServer(this);
-			Stage stage = currentStage;
+			Stage stage=currentStage;
 			root = (BorderPane) stage.getScene().getRoot();
+			panicController.setApp(num);
 			root.setCenter(panicView);
+			
 			stage.show();
+			
 			currentStage = stage;
 		}catch(IOException e){
 			e.printStackTrace();
@@ -132,16 +133,37 @@ public class Server extends Application implements Runnable{
 				Socket msck=server.accept();
 				ObjectInputStream stream=new ObjectInputStream(msck.getInputStream());
 				ChatMessage msg=(ChatMessage)stream.readObject();
-				String text=msg.getApartment()+"\n"+msg.getIp()+"\n"+msg.getMessage();
-				controller.actualize(text);
-				Socket sender=new Socket(msg.getIp(),9090);
 				
-				ObjectOutputStream toSend=new ObjectOutputStream(sender.getOutputStream());
-				toSend.writeObject(msg);
-				
+				switch(msg.getType()) {
+				case NORMAL:
+					String text=msg.getApartment()+"\n"+msg.getIp()+"\n"+msg.getMessage();
+					controller.actualize(text);
+					Socket sender=new Socket(msg.getIp(),9090);
+					ObjectOutputStream toSend=new ObjectOutputStream(sender.getOutputStream());
+					toSend.writeObject(msg);
+					sender.close();
+					msck.close();
+					stream.close();
+					break;
+				case EMERGENCE:
+					Platform.runLater(()->{
+						
+						showPanicScreen(msg.getApartment());
+					});
+					
+					break;
+				case ALLOW:
+					msck.close();
+					stream.close();
+					break;
+				default:
+					msck.close();
+					stream.close();
+					break;
+				}
 				msck.close();
 				stream.close();
-				sender.close();
+				
 			}
 			
 		} catch (IOException e) {

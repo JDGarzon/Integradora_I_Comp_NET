@@ -1,19 +1,18 @@
 package application;
 	
-import java.io.IOException;
 
-import controller.ChatController;
-import controller.SampleController;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.fxml.FXMLLoader;
 
 
 public class Main extends Application {
-	
+
+	@Override
+	public void start(Stage arg0) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+	/*
 	private Stage currentStage;
 	
 	@Override
@@ -30,8 +29,6 @@ public class Main extends Application {
 			BorderPane root;
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("Sample.fxml"));
 			root = loader.load();
-			SampleController homeController = loader.getController();
-			homeController.setMain(this);
 			Scene scene = new Scene(root);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			Stage stage = new Stage();
@@ -63,5 +60,5 @@ public class Main extends Application {
 	
 	public static void main(String[] args) {
 		launch(args);
-	}
+	}*/
 }

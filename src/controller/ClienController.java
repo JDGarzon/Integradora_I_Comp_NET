@@ -8,9 +8,9 @@ import application.Appartment;
 import application.ChatMessage;
 import application.Client;
 import application.EmailSenderService;
+import application.Type;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
@@ -19,11 +19,12 @@ public class ClienController {
 	String gmail;
 	String contact;
 	String password;
-	
-	public void complete(String gmail,String contact,String password) {
+	String num;
+	public void complete(String gmail,String contact,String password,String num) {
 		this.gmail=gmail;
 		this.contact=contact;
 		this.password=password;
+		this.num=num;
 	}
 	
 	@FXML
@@ -51,7 +52,7 @@ public class ClienController {
 	
 	@FXML
 	public void sendMesage() {
-		ChatMessage msg=new ChatMessage(nick.getText(),send.getText(),ip.getText());
+		ChatMessage msg=new ChatMessage(nick.getText(),send.getText(),ip.getText(),Type.NORMAL);
 		try {
 			@SuppressWarnings("resource")
 			Socket sock=new Socket(PORT,9999);
@@ -75,13 +76,14 @@ public class ClienController {
 	@FXML
 	public void redButton() {
 		EmailSenderService send=new EmailSenderService();
-		send.sendMail(gmail, password, contact, "Hay una emergencia en mi apartamento", "�EMERGENCIA!");
-		ChatMessage msg=new ChatMessage(myApp.getNum()+"","Es una emergencia",PORT);
+		
+		ChatMessage msg=new ChatMessage(num,"Es una emergencia",PORT,Type.EMERGENCE);
 		try {
 			@SuppressWarnings("resource")
 			Socket sock=new Socket(PORT,9999);
 			ObjectOutputStream stream=new ObjectOutputStream(sock.getOutputStream());
 			stream.writeObject(msg);
+			send.sendMail(gmail, password, contact, "Hay una emergencia en mi apartamento", "�EMERGENCIA!");
 			stream.close();
 		} catch (IOException e) {
 			
