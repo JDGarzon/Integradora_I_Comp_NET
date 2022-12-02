@@ -1,100 +1,89 @@
 package application;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.*;
-
-import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-public class Client {
-	
-		private final static int PORT = 9090;
-		String serverIp = "192.168.100.19";
-		
-		private Stage currentStage;
-		private ChatController actualChatController;
-		
-		public static void main(String[] args) {
-			launch(args);
-		}
-		
-		public void actualize() {
-			try {
-				ServerSocket serverSocket = new ServerSocket(PORT);
-				Socket socket = serverSocket.accept();
-				ObjectInputStream inStream = new ObjectInputStream(socket.getInputStream());
-				ChatMessage message = (ChatMessage) inStream.readObject();
-				actualChatController.chat.appendText("\n"+message.getMessage());
-				//System.out.println(message.getMessage());
-			} catch(Exception e) {
-				e.printStackTrace();
-			}
-		}
-		
-		@Override
-		public void start(Stage primaryStage) {
-			showHome();
-		}
-		
-		public void showHome() {
-			
-			try {
-				BorderPane root;
-				FXMLLoader loader = new FXMLLoader(getClass().getResource("Sample.fxml"));
-				root = (BorderPane)loader.load();
-				SampleController homeController = loader.getController();
-				homeController.setClient(this);
-				Scene scene = new Scene(root);
-				scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-				Stage stage = new Stage();
-				stage.setScene(scene);
-				stage.show();
-				currentStage = stage;
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-		}
-		
-		public void showChat(){
-			try{
-				BorderPane root;
-				AnchorPane chat;
-				FXMLLoader loader = new FXMLLoader(getClass().getResource("Chat.fxml"));
-				chat = loader.load();
-				ChatController chatController = loader.getController();
-				chatController.setClient(this);
-				actualChatController = chatController;
-				Stage stage = currentStage;
-				root = (BorderPane) stage.getScene().getRoot();
-				root.setCenter(chat);
-				stage.show();
-				currentStage = stage;
-			}catch(IOException e){
-				e.printStackTrace();
-			}
-		}
-		
-		public void sendMessage(ChatMessage message) {
-			try {
-				Socket socket = new Socket(serverIp,9090);
-				ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream());
-				outStream.writeObject(message);
-				
-				socket.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		*/
-}
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
 
+import controller.ClienController;
+import javafx.application.Application;
+
+
+public class Client extends Application implements Runnable {
+	
+	ClienController controller;
+	
+	
+	@Override
+	public void start(Stage primaryStage) {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("../ui/Client.fxml"));
+			BorderPane root = (BorderPane)loader.load();
+			controller = loader.getController();
+			Scene scene = new Scene(root,300,300);
+			scene.getStylesheets().add(getClass().getResource("../ui/application.css").toExternalForm());
+			primaryStage.setScene(scene);
+			primaryStage.show();
+			controller.setClient(this);
+			Thread thread=new Thread(this);
+			thread.start();;
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void main(String[] args) {
+		launch(args);
+	}
+
+
+	@Override
+	public void run() {
+		
+		try {
+			@SuppressWarnings("resource")
+			ServerSocket servClient=new ServerSocket(9090);
+			Socket client;
+			ChatMessage msg;
+			while(true) {
+				client=servClient.accept();
+				ObjectInputStream stream=new ObjectInputStream(client.getInputStream());
+				msg=(ChatMessage)stream.readObject();
+				String text=msg.getApartment()+": "+msg.getMessage();
+				controller.actualize(text);
+					
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+	}
+
+	public void actualize() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void sendMessage(ChatMessage chatMessage) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void showChat() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
+}

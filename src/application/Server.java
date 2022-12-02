@@ -1,6 +1,6 @@
 package application;
 
-import java.io.DataInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -8,147 +8,121 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Hashtable;
 
-import controller.AddApartmentController;
-import controller.ChatController;
-import controller.PanicServerViewController;
-import controller.ServerHomeController;
 import javafx.application.Application;
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import controller.AddApartmentController;
+import controller.ServerController;
 
-public class Server extends Application {
-	/**
-	public static void main(String[] args) throws IOException {
-		ServerSocket server = new ServerSocket(9090);
-		Socket socket = server.accept();
-		DataInputStream in = new DataInputStream(socket.getInputStream());
-		System.out.println(in.readUTF());
-	}
-	*/
+public class Server extends Application implements Runnable{
 	
-	private Stage currentStage;
-	private ChatController actualChatController;
-	private Hashtable<Integer, String> apartments = new Hashtable<Integer, String>();
-	
-	public static void main(String[] args) {
-	}
+	ServerController controller;
+	AddApartmentController conntrollApart;
+	Hashtable<Integer,Appartment> apartments;
 	
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			BorderPane root;
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("../ui/ServerHomeView.fxml"));
-			root = (BorderPane)loader.load();
-			ServerHomeController homeController = loader.getController();
-			homeController.setServer(this);
-			Scene scene = new Scene(root);
+			apartments=new Hashtable<>();
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("../ui/Server.fxml"));
+			File file=new File("");
+			System.out.println(file.getAbsolutePath());
+			BorderPane root = (BorderPane)loader.load();
+			controller=loader.getController();
+			
+			Scene scene = new Scene(root,400,400);
 			scene.getStylesheets().add(getClass().getResource("../ui/application.css").toExternalForm());
-			Stage stage = new Stage();
-			stage.setScene(scene);
-			stage.show();
-			currentStage = stage;
+			primaryStage.setScene(scene);
+			primaryStage.show();
+			showAddView();
+			Thread thread=new Thread(this);
+			thread.start();
+			
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void main(String[] args) {
+		launch(args);
+	}
+
+	@Override
+	public void run() {
+		try {
+			@SuppressWarnings("resource")
+			ServerSocket server=new ServerSocket(9999);
+			while(true) {
+				Socket msck=server.accept();
+				ObjectInputStream stream=new ObjectInputStream(msck.getInputStream());
+				ChatMessage msg=(ChatMessage)stream.readObject();
+				String text=msg.getApartment()+"\n"+msg.getIp()+"\n"+msg.getMessage();
+				controller.actualize(text);
+				Socket sender=new Socket(msg.getIp(),9090);
+				
+				ObjectOutputStream toSend=new ObjectOutputStream(sender.getOutputStream());
+				toSend.writeObject(msg);
+				
+				msck.close();
+				stream.close();
+				sender.close();
+			}
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-	}
-	
-	public void showHome() {
-		try{
-			BorderPane root;
-			BorderPane homeView;
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("../ui/ServerHomeView.fxml"));
-			homeView = loader.load();
-			ServerHomeController homeController = loader.getController();
-			homeController.setServer(this);
-			Stage stage = currentStage;
-			root = (BorderPane) stage.getScene().getRoot();
-			root.setCenter(homeView);
-			stage.show();
-			currentStage = stage;
-		}catch(IOException e){
-			e.printStackTrace();
-		}
-		
-	}
-	
-	public void showPanicScreen(){
-		try{
-			BorderPane root;
-			AnchorPane panicView;
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("../ui/PanicServerView.fxml"));
-			panicView = loader.load();
-			PanicServerViewController panicController = loader.getController();
-			panicController.setServer(this);
-			Stage stage = currentStage;
-			root = (BorderPane) stage.getScene().getRoot();
-			root.setCenter(panicView);
-			stage.show();
-			currentStage = stage;
-		}catch(IOException e){
-			e.printStackTrace();
-		}
-	}
-	
-	public void showAddView() {
-		try{
-			BorderPane root;
-			AnchorPane addView;
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("../ui/AddApartmentView.fxml"));
-			addView = loader.load();
-			AddApartmentController addController = loader.getController();
-			addController.setServer(this);
-			Stage stage = currentStage;
-			root = (BorderPane) stage.getScene().getRoot();
-			root.setCenter(addView);
-			stage.show();
-			currentStage = stage;
-		}catch(IOException e){
-			e.printStackTrace();
-		}
-	}
-	
-	public void notifyVisit() {
-		
-	}
-	
-	public void addApartment(Integer apartment, String ip) {
-		apartments.put(apartment, ip);
-	}
-	
-/**	
-	private final static int PORT = 9090;
-	
-	public static void main(String[] args) {
-		try {
-			ServerSocket serverSocket = new ServerSocket(PORT);
-			ChatMessage chatMessage;
-			while(true) {
-				Socket socket = serverSocket.accept();
-				ObjectInputStream inStream = new ObjectInputStream(socket.getInputStream());
-				chatMessage = (ChatMessage) inStream.readObject();
-				System.out.println("\n"+chatMessage.getApartment() +": " + chatMessage.getMessage() );
-				
-				Socket senderSocket = new Socket(chatMessage.getApartment(),PORT);
-				ObjectOutputStream outStream = new ObjectOutputStream(senderSocket.getOutputStream());
-				outStream.writeObject(chatMessage);
-				
-				outStream.close();
-				senderSocket.close();
-				socket.close();
-			}
-
-		}catch(IOException e) {
-			System.out.println("Exception caught when trying to listen on port "+ PORT + " or listening for a connection");
-			System.out.println(e.getMessage());
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 	}
-	*/
+
+
+	public void showHome() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void addApartment(int aprtmentNum, String gmail,String contact,String password, String ip) {
+		Appartment app=new Appartment(aprtmentNum,gmail,contact,password,ip);
+		apartments.put(aprtmentNum, app);
+		
+	}
+
+	public void showAddView() {
+		
+		try {
+			Stage stage=new Stage();
+			
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("../ui/AddpartmentView.fxml"));
+	
+			BorderPane root;
+			root = (BorderPane)loader.load();
+			conntrollApart=loader.getController();
+			
+			conntrollApart.setServer(this);
+			Scene scene = new Scene(root,400,400);
+			scene.getStylesheets().add(getClass().getResource("../ui/application.css").toExternalForm());
+			stage.setScene(scene);
+			stage.show();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+	}
+
+	public void notifyVisit() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
+	
 }

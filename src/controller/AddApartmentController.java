@@ -19,10 +19,19 @@ public class AddApartmentController {
 	TextArea ip;
 	
 	@FXML
+	TextArea gmailUser;
+	
+	@FXML
+	TextArea gmailContact;
+	
+	@FXML
+	TextArea password;
+	
+	@FXML
 	Button add;
 	
 	public void addApartment() {
-		server.addApartment(Integer.parseInt(apartmentNumber.getText()), ip.getText());
+		server.addApartment(Integer.parseInt(apartmentNumber.getText()), gmailUser.getText(),gmailContact.getText(),password.getText(),ip.getText());
 	}
 	
 	public void backView() {

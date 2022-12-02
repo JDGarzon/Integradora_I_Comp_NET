@@ -11,9 +11,10 @@ public class ChatMessage implements Serializable{
 	private String apartment;
 	private String message;
 	
-	public ChatMessage(String apartment, String message) {
+	public ChatMessage(String apartment, String message,String ip) {
 		this.apartment = apartment;
 		this.message = message;
+		this.ip=ip;
 	}
 
 	public String getMessage() {
