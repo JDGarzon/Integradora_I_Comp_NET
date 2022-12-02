@@ -93,8 +93,22 @@ public class Client extends Application implements Runnable {
 				client=servClient.accept();
 				ObjectInputStream stream=new ObjectInputStream(client.getInputStream());
 				msg=(ChatMessage)stream.readObject();
-				String text=msg.getApartment()+": "+msg.getMessage();
-				controller.actualize(text);
+				
+				switch (msg.getType()){
+				case ALLOW:
+					
+					break;
+				case EMERGENCE:
+					break;
+				case NORMAL:
+					String text=msg.getApartment()+": "+msg.getMessage();
+					controller.actualize(text);
+					break;
+				default:
+					break;
+					
+				}
+				
 					
 			}
 		} catch (IOException e) {
