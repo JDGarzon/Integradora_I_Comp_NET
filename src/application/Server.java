@@ -20,6 +20,9 @@ import controller.PanicViewController;
 import controller.ServerController;
 import controller.ServerHomeController;
 
+/**
+ * La clase server representa el host que hace las veces de Servidor para todos los clientes, a la vez que representa el host de dispositivo de la porteria.
+ */
 public class Server extends Application implements Runnable{
 	
 	ServerController controller;
@@ -27,32 +30,10 @@ public class Server extends Application implements Runnable{
 	Hashtable<Integer,String> apartments;
 	ServerHomeController homeController;
 	Stage currentStage;
-	/*
-	@Override
-	public void start(Stage primaryStage) {
-		try {
-			apartments=new Hashtable<>();
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("../ui/Server.fxml"));
-			File file=new File("");
-			System.out.println(file.getAbsolutePath());
-			BorderPane root = (BorderPane)loader.load();
-			controller=loader.getController();
-			
-			Scene scene = new Scene(root,400,400);
-			scene.getStylesheets().add(getClass().getResource("../ui/application.css").toExternalForm());
-			primaryStage.setScene(scene);
-			primaryStage.show();
-			currentStage = primaryStage;
-			
-			Thread thread=new Thread(this);
-			thread.start();
-			
-			
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-	}
-	*/
+	
+	/**
+	 * Su funcion es instanciar la hashtable donde se almacenara la informacion de los apartamentos, se cargara la interfaz grafica de la porteria y se iniciara un hilo para sus funcionalidades.
+	 */
 	
 	  public void start(Stage primaryStage) {
 		try {
@@ -80,7 +61,10 @@ public class Server extends Application implements Runnable{
 			e.printStackTrace();
 		}
 	}
-	
+	  
+	  /**
+	   * Su funcion es cargar la interfaz grafica de la interfaz grafica principal para el servidor / la porteria.
+	   */
 	public void showHome() {
 		try{
 			BorderPane root;
@@ -100,6 +84,10 @@ public class Server extends Application implements Runnable{
 		
 	}
 	
+	/**
+	 * Su funcion es cargar la interfaz grafica que avisa que algun apartamento ha presionado el boton de panico para el servidor / la porteria.
+	 * @param num Es el numero del apartamento que ha presionado el boton de panico
+	 */
 	public void showPanicScreen(String num){
 		try{
 			BorderPane root;
@@ -122,10 +110,17 @@ public class Server extends Application implements Runnable{
 		}
 	}
 	
+	/**
+	 * Metodo main que inicia el programa con los argumentos de ejecucion
+	 * @param args argumentos de ejecucion
+	 */
 	public static void main(String[] args) {
 		launch(args);
 	}
 
+	/**
+	 * Inicia los procesos del hilo. Estos procesos son estar a la escucha de alguna conexion con el servidor y procesar su respuesta.
+	 */
 	@Override
 	public void run() {
 		try {
@@ -182,12 +177,19 @@ public class Server extends Application implements Runnable{
 		}
 		
 	}
-
+/**
+ * Ingresa la informacion de un apartamento a la hashtable
+ * @param aprtmentNum Es el numero del apartamento
+ * @param ip Es la ip del host cliente del apartamento
+ */
 	public void addApartment(int aprtmentNum, String ip) {
 		apartments.put(aprtmentNum, ip);
 		
 	}
 
+	/**
+	 * Carga la interfaz donde se añade la informacion de los apartamentos
+	 */
 	public void showAddView() {
 
         try{
@@ -209,6 +211,12 @@ public class Server extends Application implements Runnable{
             e.printStackTrace();
         }
     }
+	
+	/**
+	 * Notifica a el apartamento indicado que tiene visita en la porteria
+	 * @param name Nombre del visitante
+	 * @param app Numero de apartamento
+	 */
 
 	public void notifyVisit(String name,String app) {
 		int num=Integer.parseInt(app);
