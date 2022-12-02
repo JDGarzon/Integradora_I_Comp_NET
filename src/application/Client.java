@@ -10,6 +10,7 @@ import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import controller.AllowController;
 import controller.ClienController;
 import controller.SingInController;
 import javafx.application.Application;
@@ -65,6 +66,24 @@ public class Client extends Application implements Runnable {
 			Stage stage = currentStage;
 			root = (BorderPane) stage.getScene().getRoot();
 			root.setCenter(chatView);
+			stage.show();
+			currentStage = stage;
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+	}
+	
+	public void showAllow() {
+		try{
+			BorderPane root;
+			BorderPane allowView;
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("../ui/AllowPermision.fxml"));
+			allowView = loader.load();
+			AllowController allowController = loader.getController();
+			allowController.setClient(this);
+			Stage stage = currentStage;
+			root = (BorderPane) stage.getScene().getRoot();
+			root.setCenter(allowView);
 			stage.show();
 			currentStage = stage;
 		}catch(IOException e){
