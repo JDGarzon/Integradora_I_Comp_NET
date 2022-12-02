@@ -5,31 +5,32 @@
 <?import javafx.scene.effect.Light.Distant?>
 <?import javafx.scene.effect.Lighting?>
 <?import javafx.scene.effect.Shadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AllowController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AllowController">
    <center>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Label layoutX="214.0" layoutY="60.0" text="Visit has arrived:">
+            <Label layoutX="215.0" layoutY="41.0" text="Visit has arrived:">
                <font>
                   <Font size="24.0" />
                </font>
             </Label>
-            <Label fx:id="name" layoutX="269.0" layoutY="121.0" text="Name">
+            <Label fx:id="name" layoutX="271.0" layoutY="117.0" text="Name">
                <font>
                   <Font size="24.0" />
                </font>
             </Label>
-            <Label layoutX="171.0" layoutY="185.0" text="Do you want to allow access?" textAlignment="CENTER">
+            <Label layoutX="173.0" layoutY="192.0" text="Do you want to allow access?" textAlignment="CENTER">
                <font>
                   <Font size="20.0" />
                </font>
             </Label>
-            <Button layoutX="114.0" layoutY="261.0" mnemonicParsing="false" onAction="#allowAcces" style="-fx-background-color: #00ab41;" text="Allow">
+            <Button layoutX="116.0" layoutY="275.0" mnemonicParsing="false" onAction="#allowAcces" style="-fx-background-color: #00ab41;" text="Allow">
                <font>
                   <Font size="30.0" />
                </font>
@@ -44,7 +45,7 @@
                   </Lighting>
                </effect>
             </Button>
-            <Button layoutX="376.0" layoutY="261.0" mnemonicParsing="false" onAction="#denyAcces" style="-fx-background-color: #FF0000;" text="Deny">
+            <Button layoutX="378.0" layoutY="275.0" mnemonicParsing="false" onAction="#denyAcces" style="-fx-background-color: #FF0000;" text="Deny">
                <font>
                   <Font size="30.0" />
                </font>
@@ -59,6 +60,11 @@
                   </Lighting>
                </effect>
             </Button>
+            <ImageView fitHeight="56.0" fitWidth="62.0" layoutX="512.0" layoutY="31.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../img/campanas.png" />
+               </image>
+            </ImageView>
          </children>
       </AnchorPane>
    </center>
