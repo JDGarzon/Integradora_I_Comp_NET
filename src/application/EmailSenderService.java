@@ -4,8 +4,19 @@ import java.util.Properties;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-
+/**
+ * Es la clase que representa el servicio de mail
+ *
+ */
 public class EmailSenderService {
+	/**
+	 * Es el metodo encargado de enviar email
+	 * @param sender Es el correo del usuario que envia el mensaje
+	 * @param password Es la contraseña de aplicacion con del correso del usuario
+	 * @param to Es el correo de la persona a la cual esta dirigido el mensaje
+	 * @param subject Es el asunto del correo
+	 * @param body Es el cuerpo del correo
+	 */
 	public void sendMail(String sender,String password,String to, String subject, String body) {
 
 	     // Para la dirección nomcuenta@gmail.com
