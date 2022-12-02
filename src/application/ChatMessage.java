@@ -2,6 +2,11 @@ package application;
 
 import java.io.Serializable;
 
+/**
+ * Es la clase que representa los mensajes que se trasmiten
+ *
+ */
+
 public class ChatMessage implements Serializable{
 	/**
 	 * 

@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-import application.Appartment;
 import application.ChatMessage;
 import application.Client;
 import application.EmailSenderService;
@@ -38,7 +37,7 @@ public class ClienController {
 	
 	private final String PORT="192.168.56.1";
 	
-	Appartment myApp;
+	
 	
 	Client client;
 	
@@ -46,9 +45,6 @@ public class ClienController {
 		this.client=client;
 	}
 	
-	public void setApp(Appartment app) {
-		myApp=app;
-	}
 	
 	@FXML
 	public void sendMesage() {
@@ -70,6 +66,34 @@ public class ClienController {
 		Platform.runLater(()->{
 			received.appendText("\n"+text);
 		});
+	}
+	
+	public void allow() {
+		ChatMessage msg=new ChatMessage(num,"YES",PORT,Type.ALLOW);
+		try {
+			@SuppressWarnings("resource")
+			Socket sock=new Socket(PORT,9999);
+			ObjectOutputStream stream=new ObjectOutputStream(sock.getOutputStream());
+			stream.writeObject(msg);
+			stream.close();
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+		}
+	}
+	
+	public void deny() {
+		ChatMessage msg=new ChatMessage(num,"NO",PORT,Type.ALLOW);
+		try {
+			@SuppressWarnings("resource")
+			Socket sock=new Socket(PORT,9999);
+			ObjectOutputStream stream=new ObjectOutputStream(sock.getOutputStream());
+			stream.writeObject(msg);
+			stream.close();
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+		}
 	}
 	
 	

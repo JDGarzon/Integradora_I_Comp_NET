@@ -14,7 +14,12 @@ import controller.AllowController;
 import controller.ClienController;
 import controller.SingInController;
 import javafx.application.Application;
+import javafx.application.Platform;
 
+/**
+ * Es el cliente con el cual los usuarios interactuan para comunicarse
+ *
+ */
 
 public class Client extends Application implements Runnable {
 	
@@ -32,6 +37,12 @@ public class Client extends Application implements Runnable {
 		this.password=password;
 		this.num=num;
 	}
+	
+	
+	/**
+	 * Es el metodo encargado de iniciar el programa
+	 * @param primaryStage El parametro primaryStage es la stage inicial
+	 */
 	
 	@Override
 	public void start(Stage primaryStage) {
@@ -73,7 +84,7 @@ public class Client extends Application implements Runnable {
 		}
 	}
 	
-	public void showAllow() {
+	public void showAllow(String name) {
 		try{
 			BorderPane root;
 			BorderPane allowView;
@@ -81,9 +92,11 @@ public class Client extends Application implements Runnable {
 			allowView = loader.load();
 			AllowController allowController = loader.getController();
 			allowController.setClient(this);
+			allowController.setName(name);
 			Stage stage = currentStage;
 			root = (BorderPane) stage.getScene().getRoot();
 			root.setCenter(allowView);
+			
 			stage.show();
 			currentStage = stage;
 		}catch(IOException e){
@@ -107,14 +120,18 @@ public class Client extends Application implements Runnable {
 			@SuppressWarnings("resource")
 			ServerSocket servClient=new ServerSocket(9090);
 			Socket client;
-			ChatMessage msg;
+			
 			while(true) {
 				client=servClient.accept();
 				ObjectInputStream stream=new ObjectInputStream(client.getInputStream());
-				msg=(ChatMessage)stream.readObject();
+				final ChatMessage msg=(ChatMessage)stream.readObject();
 				
 				switch (msg.getType()){
 				case ALLOW:
+					
+					Platform.runLater(()->{
+						showAllow(msg.getApartment());
+					});
 					
 					break;
 				case EMERGENCE:
@@ -139,6 +156,14 @@ public class Client extends Application implements Runnable {
 		}
 		
 		
+	}
+	
+	public void deny() {
+		controller.deny();
+	}
+	
+	public void allow() {
+		controller.allow();
 	}
 
 	public void actualize() {

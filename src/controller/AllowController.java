@@ -13,11 +13,13 @@ public class AllowController {
 	
 	@FXML
 	public void allowAcces() {
+		client.allow();
 		client.showChat();
 	}
 	
 	@FXML
 	public void denyAcces() {
+		client.deny();
 		client.showChat();
 	}
 	

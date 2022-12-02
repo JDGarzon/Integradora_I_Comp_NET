@@ -2,38 +2,27 @@ package controller;
 
 import application.Server;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 
 public class AddApartmentController {
 	
 	Server server;
 
-	@FXML
-	Button back;
+
 	
 	@FXML
-	TextArea apartmentNumber;
+	TextField apartmentNumber;
 	
 	@FXML
-	TextArea ip;
+	TextField ip;
+	
 	
 	@FXML
-	TextArea gmailUser;
-	
-	@FXML
-	TextArea gmailContact;
-	
-	@FXML
-	TextArea password;
-	
-	@FXML
-	Button add;
-	
 	public void addApartment() {
-		server.addApartment(Integer.parseInt(apartmentNumber.getText()), gmailUser.getText(),gmailContact.getText(),password.getText(),ip.getText());
+		server.addApartment(Integer.parseInt(apartmentNumber.getText()),ip.getText());
 	}
 	
+	@FXML
 	public void backView() {
 		server.showHome();
 	}

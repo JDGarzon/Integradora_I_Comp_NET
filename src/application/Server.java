@@ -24,7 +24,8 @@ public class Server extends Application implements Runnable{
 	
 	ServerController controller;
 	AddApartmentController conntrollApart;
-	Hashtable<Integer,Appartment> apartments;
+	Hashtable<Integer,String> apartments;
+	ServerHomeController homeController;
 	Stage currentStage;
 	/*
 	@Override
@@ -55,6 +56,7 @@ public class Server extends Application implements Runnable{
 	
 	  public void start(Stage primaryStage) {
 		try {
+			apartments= new Hashtable<>();
 			BorderPane root;
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("../ui/ServerHomeView.fxml"));
 			
@@ -85,7 +87,7 @@ public class Server extends Application implements Runnable{
 			BorderPane homeView;
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("../ui/ServerHomeView.fxml"));
 			homeView = loader.load();
-			ServerHomeController homeController = loader.getController();
+			homeController = loader.getController();
 			homeController.setServer(this);
 			Stage stage = currentStage;
 			root = (BorderPane) stage.getScene().getRoot();
@@ -153,6 +155,11 @@ public class Server extends Application implements Runnable{
 					
 					break;
 				case ALLOW:
+					String answer=msg.getMessage();
+					Platform.runLater(()->{
+						homeController.setAnswer(answer);
+					});
+					
 					msck.close();
 					stream.close();
 					break;
@@ -176,38 +183,47 @@ public class Server extends Application implements Runnable{
 		
 	}
 
-	public void addApartment(int aprtmentNum, String gmail,String contact,String password, String ip) {
-		Appartment app=new Appartment(aprtmentNum,gmail,contact,password,ip);
-		apartments.put(aprtmentNum, app);
+	public void addApartment(int aprtmentNum, String ip) {
+		apartments.put(aprtmentNum, ip);
 		
 	}
 
 	public void showAddView() {
-		
+
+        try{
+            BorderPane root;
+            AnchorPane addView;
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../ui/AddpartmentView.fxml"));
+            addView = loader.load();
+
+            AddApartmentController addController = loader.getController();
+            addController.setServer(this);
+            Stage stage=currentStage;
+            root = (BorderPane) stage.getScene().getRoot();
+            root.setCenter(addView);
+
+            stage.show();
+
+            currentStage = stage;
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+
+	public void notifyVisit(String name,String app) {
+		int num=Integer.parseInt(app);
+		String ip=apartments.get(num);
+		ChatMessage msg=new ChatMessage(name,"",ip,Type.ALLOW);
 		try {
-			Stage stage=new Stage();
+			Socket sender=new Socket(ip,9090);
+			ObjectOutputStream toSend=new ObjectOutputStream(sender.getOutputStream());
+			toSend.writeObject(msg);
+			sender.close();
 			
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("../ui/AddpartmentView.fxml"));
-	
-			BorderPane root;
-			root = (BorderPane)loader.load();
-			conntrollApart=loader.getController();
-			
-			conntrollApart.setServer(this);
-			Scene scene = new Scene(root,400,400);
-			scene.getStylesheets().add(getClass().getResource("../ui/application.css").toExternalForm());
-			stage.setScene(scene);
-			stage.show();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-	}
-
-	public void notifyVisit() {
-		// TODO Auto-generated method stub
 		
 	}
 	
