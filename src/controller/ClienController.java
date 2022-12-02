@@ -25,9 +25,9 @@ public class ClienController {
 	String num;
 	/**
 	 * Metodo encargado de completar los campos
-	 * @param gmail es el gmail del dueño del apartamento
-	 * @param contact Es el gmail del contacto de emergencia del dueño del apartamento
-	 * @param password Es la contraseña de aplicación del gmail del dueño de apartamento
+	 * @param gmail es el gmail del dueï¿½o del apartamento
+	 * @param contact Es el gmail del contacto de emergencia del dueï¿½o del apartamento
+	 * @param password Es la contraseï¿½a de aplicaciï¿½n del gmail del dueï¿½o de apartamento
 	 * @param num Es el numero de apartamento
 	 */
 	public void complete(String gmail,String contact,String password,String num) {
@@ -44,7 +44,7 @@ public class ClienController {
 	@FXML
 	TextField ip;
 	
-	private final String PORT="192.168.56.1";
+	private final String PORT="192.168.136.72";
 	
 	
 	
