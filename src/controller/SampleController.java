@@ -1,5 +1,7 @@
-package application;
+package controller;
 
+import application.Client;
+import application.Main;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
@@ -10,6 +12,14 @@ public class SampleController {
 	Client client;
 	@FXML
 	Button chat;
+	
+	@FXML
+	Button panic;
+	
+	@FXML
+	public void sendPanicAlert() {
+		
+	}
 	
 	@FXML
 	public void chatScreen() {

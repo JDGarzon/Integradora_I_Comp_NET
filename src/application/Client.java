@@ -1,5 +1,6 @@
 package application;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -12,9 +13,15 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-public class Client extends Application {
+public class Client {
 	
-		private final static int PORT = 9090;
+	public static void main(String[] args) throws IOException {
+		Socket clientSocket = new Socket("192.168.10.11", 9090);
+		DataOutputStream out = new DataOutputStream(clientSocket.getOutputStream());
+		out.writeUTF("Connected");
+	}
+	
+		/**private final static int PORT = 9090;
 		String serverIp = "192.168.10.11";
 		
 		private Stage currentStage;
@@ -94,5 +101,6 @@ public class Client extends Application {
 				e.printStackTrace();
 			}
 		}
+		*/
 }
 

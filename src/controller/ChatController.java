@@ -1,5 +1,8 @@
-package application;
+package controller;
 
+import application.ChatMessage;
+import application.Client;
+import application.Main;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
