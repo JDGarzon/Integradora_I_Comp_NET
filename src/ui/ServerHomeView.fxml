@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ServerHomeController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ServerHomeController">
    <center>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
@@ -16,22 +16,22 @@
                   <Font size="24.0" />
                </font>
             </Button>
-            <Button fx:id="notifyVisit" layoutX="209.0" layoutY="235.0" mnemonicParsing="false" onAction="#adviceVisit" text="Visit announcement">
+            <Button fx:id="notifyVisit" layoutX="209.0" layoutY="247.0" mnemonicParsing="false" onAction="#adviceVisit" text="Visit announcement">
                <font>
                   <Font size="18.0" />
                </font>
             </Button>
-            <TextField fx:id="visitantName" layoutX="151.0" layoutY="149.0" promptText="Visit's name">
-               <font>
-                  <Font size="24.0" />
-               </font>
-            </TextField>
-            <TextField fx:id="apartment" layoutX="313.0" layoutY="33.0" promptText="Apartment #">
+            <TextField fx:id="visitantName" layoutX="41.0" layoutY="151.0" prefHeight="39.0" prefWidth="224.0" promptText="Visit's name">
                <font>
                   <Font size="18.0" />
                </font>
             </TextField>
-            <Label fx:id="answer" layoutX="230.0" layoutY="313.0" text="Answer:">
+            <TextField fx:id="apartment" layoutX="324.0" layoutY="151.0" promptText="Apartment #">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </TextField>
+            <Label fx:id="answer" layoutX="112.0" layoutY="330.0" text="Answer:">
                <font>
                   <Font size="24.0" />
                </font>
@@ -40,3 +40,4 @@
       </AnchorPane>
    </center>
 </BorderPane>
+
