@@ -15,14 +15,8 @@ import javafx.stage.Stage;
 
 public class Client {
 	
-	public static void main(String[] args) throws IOException {
-		Socket clientSocket = new Socket("192.168.10.11", 9090);
-		DataOutputStream out = new DataOutputStream(clientSocket.getOutputStream());
-		out.writeUTF("Connected");
-	}
-	
-		/**private final static int PORT = 9090;
-		String serverIp = "192.168.10.11";
+		private final static int PORT = 9090;
+		String serverIp = "192.168.100.19";
 		
 		private Stage currentStage;
 		private ChatController actualChatController;

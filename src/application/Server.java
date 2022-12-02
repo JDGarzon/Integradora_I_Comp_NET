@@ -140,8 +140,7 @@ public class Server extends Application {
 				senderSocket.close();
 				socket.close();
 			}
-			
-			
+
 		}catch(IOException e) {
 			System.out.println("Exception caught when trying to listen on port "+ PORT + " or listening for a connection");
 			System.out.println(e.getMessage());
