@@ -7,6 +7,7 @@ Juan Manuel Madrid
 **Participantes:**
 Geovanny Quintero - A00378039
 Juan David Garzon - A00377983
+Samuel Adrian Soto - A00377818
 
 ## Informe del proyecto
 
