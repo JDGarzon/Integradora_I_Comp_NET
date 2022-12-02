@@ -12,16 +12,20 @@ import javafx.application.Application;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import controller.AddApartmentController;
+import controller.PanicViewController;
 import controller.ServerController;
+import controller.ServerHomeController;
 
 public class Server extends Application implements Runnable{
 	
 	ServerController controller;
 	AddApartmentController conntrollApart;
 	Hashtable<Integer,Appartment> apartments;
+	Stage currentStage;
 	
 	@Override
 	public void start(Stage primaryStage) {
@@ -37,12 +41,80 @@ public class Server extends Application implements Runnable{
 			scene.getStylesheets().add(getClass().getResource("../ui/application.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.show();
+			currentStage = primaryStage;
 			showAddView();
 			Thread thread=new Thread(this);
 			thread.start();
 			
 			
 		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	  public void start(Stage primaryStage) {
+		try {
+			BorderPane root;
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("../ui/ServerHomeView.fxml"));
+			
+			File file=new File("");
+			System.out.println(file.getAbsolutePath());
+			
+			root = (BorderPane)loader.load();
+			ServerHomeController homeController = loader.getController();
+			homeController.setServer(this);
+			Scene scene = new Scene(root);
+			scene.getStylesheets().add(getClass().getResource("../ui/application.css").toExternalForm());
+			Stage stage = new Stage();
+			stage.setScene(scene);
+			stage.show();
+			currentStage = stage;
+			
+			showAddView();
+			Thread thread=new Thread(this);
+			thread.start();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	 */
+	
+	public void showHome() {
+		try{
+			BorderPane root;
+			BorderPane homeView;
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("../ui/ServerHomeView.fxml"));
+			homeView = loader.load();
+			ServerHomeController homeController = loader.getController();
+			homeController.setServer(this);
+			Stage stage = currentStage;
+			root = (BorderPane) stage.getScene().getRoot();
+			root.setCenter(homeView);
+			stage.show();
+			currentStage = stage;
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public void showPanicScreen(){
+		try{
+			BorderPane root;
+			AnchorPane panicView;
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("../ui/PanicView.fxml"));
+			panicView = loader.load();
+			PanicViewController panicController = loader.getController();
+			panicController.setServer(this);
+			Stage stage = currentStage;
+			root = (BorderPane) stage.getScene().getRoot();
+			root.setCenter(panicView);
+			stage.show();
+			currentStage = stage;
+		}catch(IOException e){
 			e.printStackTrace();
 		}
 	}
@@ -79,12 +151,6 @@ public class Server extends Application implements Runnable{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-	}
-
-
-	public void showHome() {
-		// TODO Auto-generated method stub
 		
 	}
 

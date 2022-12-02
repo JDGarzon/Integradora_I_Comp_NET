@@ -2,6 +2,7 @@ package application;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -11,6 +12,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import controller.ClienController;
+import controller.PanicViewController;
+import controller.ServerHomeController;
 import javafx.application.Application;
 
 
@@ -18,17 +21,19 @@ public class Client extends Application implements Runnable {
 	
 	ClienController controller;
 	
+	Stage currentStage;
 	
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("../ui/Client.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("../ui/EnterSingIn.fxml"));
 			BorderPane root = (BorderPane)loader.load();
 			controller = loader.getController();
 			Scene scene = new Scene(root,300,300);
 			scene.getStylesheets().add(getClass().getResource("../ui/application.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.show();
+			currentStage = primaryStage;
 			controller.setClient(this);
 			Thread thread=new Thread(this);
 			thread.start();;
@@ -36,6 +41,28 @@ public class Client extends Application implements Runnable {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void showChat() {
+		try{
+			BorderPane root;
+			BorderPane chatView;
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("../ui/Client.fxml"));
+			chatView = loader.load();
+			ClienController clientController = loader.getController();
+			clientController.setClient(this);
+			Stage stage = currentStage;
+			root = (BorderPane) stage.getScene().getRoot();
+			root.setCenter(chatView);
+			stage.show();
+			currentStage = stage;
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+	}
+	
+	public void showVisitAdvice(){
+		
 	}
 	
 	public static void main(String[] args) {
@@ -76,11 +103,6 @@ public class Client extends Application implements Runnable {
 	}
 
 	public void sendMessage(ChatMessage chatMessage) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void showChat() {
 		// TODO Auto-generated method stub
 		
 	}

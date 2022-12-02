@@ -10,6 +10,7 @@ import application.Client;
 import application.EmailSenderService;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
@@ -74,7 +75,7 @@ public class ClienController {
 	@FXML
 	public void redButton() {
 		EmailSenderService send=new EmailSenderService();
-		send.sendMail(gmail, password, contact, "Hay una emergencia en mi apartamento", "¡EMERGENCIA!");
+		send.sendMail(gmail, password, contact, "Hay una emergencia en mi apartamento", "ï¿½EMERGENCIA!");
 		ChatMessage msg=new ChatMessage(myApp.getNum()+"","Es una emergencia",PORT);
 		try {
 			@SuppressWarnings("resource")
