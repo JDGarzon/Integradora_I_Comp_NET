@@ -134,8 +134,13 @@ public class Server extends Application implements Runnable{
 				switch(msg.getType()) {
 				case NORMAL:
 					String text=msg.getApartment()+"\n"+msg.getIp()+"\n"+msg.getMessage();
-					controller.actualize(text);
-					Socket sender=new Socket(msg.getIp(),9090);
+					System.out.println("Apartment: "+msg.getApartment());
+					Platform.runLater(()->{
+						controller.actualize(text);
+					});
+					int part=Integer.parseInt(msg.getApartment());
+					String ip=apartments.get(part);
+					Socket sender=new Socket(ip,9090);
 					ObjectOutputStream toSend=new ObjectOutputStream(sender.getOutputStream());
 					toSend.writeObject(msg);
 					sender.close();

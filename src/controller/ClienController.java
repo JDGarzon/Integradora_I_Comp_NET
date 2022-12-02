@@ -43,8 +43,6 @@ public class ClienController {
 	TextArea received;
 	@FXML
 	TextField ip;
-	@FXML
-	TextField nick;
 	
 	private final String PORT="192.168.56.1";
 	
@@ -61,7 +59,7 @@ public class ClienController {
 	 */
 	@FXML
 	public void sendMesage() {
-		ChatMessage msg=new ChatMessage(nick.getText(),send.getText(),ip.getText(),Type.NORMAL);
+		ChatMessage msg=new ChatMessage(ip.getText(),send.getText(),ip.getText(),Type.NORMAL);
 		try {
 			@SuppressWarnings("resource")
 			Socket sock=new Socket(PORT,9999);
